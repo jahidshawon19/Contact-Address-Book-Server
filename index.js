@@ -2,6 +2,7 @@
 const express = require('express')
 const { MongoClient } = require('mongodb');
 const cors = require('cors')
+const ObjectId = require('mongodb').ObjectId 
 
 
 const app = express() 
@@ -48,6 +49,26 @@ async function run() {
             res.json(result)
             
         })
+
+
+        // get api to load all contacts 
+
+        app.get('/contacts', async(req, res)=>{
+            const cursor = contactsCollection.find({}) // initially set empty object 
+            const contacts = await cursor.toArray() 
+            res.send(contacts)
+        })
+
+        // delete api to delete specific contact 
+        app.delete('/contacts/:id', async(req, res)=>{
+            const id = req.params.id  
+            const query = {_id:ObjectId(id)}
+            const result = await contactsCollection.deleteOne(query)
+            res.json(result)
+
+        })
+
+        
 
         console.log('Database Connected Successfully')
 
