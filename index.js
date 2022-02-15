@@ -1,6 +1,7 @@
 // BISMILLAHIR RAHMANINR RAHIM
 const express = require('express')
 const { MongoClient } = require('mongodb');
+require('dotenv').config()
 const cors = require('cors')
 const ObjectId = require('mongodb').ObjectId 
 
@@ -28,7 +29,7 @@ app.listen(port, ()=>{
 // database connection start 
 
 
-const uri = "mongodb+srv://contactBookAdmin:7KKuH86xuQlBaebT@cluster0.1yfcy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.1yfcy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
