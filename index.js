@@ -55,8 +55,22 @@ async function run() {
 
         app.get('/contacts', async(req, res)=>{
             const cursor = contactsCollection.find({}) // initially set empty object 
-            const contacts = await cursor.toArray() 
-            res.send(contacts)
+            const page = req.query.page // fetch the page info 
+            const size = parseInt(req.query.size)  // get the page size 
+            let contacts; 
+            const count = await cursor.count()
+            if(page){
+                contacts= await cursor.skip(page*size).limit(size).toArray()
+            }else{
+                contacts = await cursor.toArray() 
+            }
+           
+           
+            
+            res.send({
+                count,
+                contacts
+            })
         })
 
         // delete api to delete specific contact 
