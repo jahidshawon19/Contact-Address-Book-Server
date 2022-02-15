@@ -21,7 +21,7 @@ app.listen(port, ()=>{
     console.log(`Running server on port: ${port}`)
 })
 
-// database connection start 
+
 
 
 // database connection start 
@@ -36,6 +36,19 @@ async function run() {
     try {
 
         await client.connect()
+        const database = client.db("contactAddress")
+        const contactsCollection = database.collection("contacts")
+
+        // post api to create new contact 
+
+        app.post('/contacts', async(req, res)=>{
+        
+            const newContact = req.body 
+            const result = await contactsCollection. insertOne(newContact)
+            res.json(result)
+            
+        })
+
         console.log('Database Connected Successfully')
 
     } finally {
