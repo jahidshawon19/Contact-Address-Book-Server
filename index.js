@@ -67,8 +67,44 @@ async function run() {
             res.json(result)
 
         })
+        // get api to display specific contact information 
+        app.get('/contacts/:id', async(req, res)=>{
+            const id = req.params.id 
+            const query = {_id:ObjectId(id)} 
+            const contact = await contactsCollection.findOne(query)
+            res.send(contact) 
+        })
 
-        
+        // put api to upate contact  
+        app.put('/contacts/:id', async(req, res)=>{
+            const id = req.params.id; 
+            const updatedContact = req.body 
+            const filter = {_id: ObjectId(id)}
+            const updateDoc = {
+                $set:{
+                    firstName: updatedContact.firstName,
+                    lastName: updatedContact.lastName,
+                    companyName: updatedContact.companyName,
+                    email:updatedContact.email, 
+                    telePhoneNumber:updatedContact.telePhoneNumber,
+                    mobilePhoneNumber: updatedContact.mobilePhoneNumber,
+                    country:updatedContact.country,
+                    city:updatedContact.city,
+                    state:updatedContact.state,
+                    photoURL:updatedContact.photoURL
+
+
+
+
+                },
+            }
+            const result = await contactsCollection.updateOne(filter, updateDoc) 
+
+            
+            res.json(result)
+        })
+
+
 
         console.log('Database Connected Successfully')
 
